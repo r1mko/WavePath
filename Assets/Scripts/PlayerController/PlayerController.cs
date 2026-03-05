@@ -109,6 +109,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
+            Debug.Log("Обнаружено препятствие");
             //LevelRestart();
         }
     }
