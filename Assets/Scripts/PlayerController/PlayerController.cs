@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private bool atTopBorder;
     private bool atBottomBorder;
 
-    public void StartMove()
+    public void StartedMove()
     {
         GameStarted = true;
     }
@@ -30,10 +30,14 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
-        StartMove();
     }
     private void Update()
     {
+        if (Input.GetMouseButton(0) && !GameStarted)
+        {
+            StartedMove();
+        }
+
         target = Input.GetMouseButton(0) ? 1 : 0;
     }
 
