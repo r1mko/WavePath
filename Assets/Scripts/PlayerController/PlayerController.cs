@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     public bool GameStarted;
+
     // wave movement
     [SerializeField] private Vector2 waveForceDirectionUp;
     [SerializeField] private Vector2 waveForceDirectionDown;
+
     // wave angle
     [SerializeField] private float waveAngleRotation;
     [SerializeField] private float waveLerpBackSpeed;
@@ -16,11 +19,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask borderLayer;
     [SerializeField] private float borderCheckRadius;
 
+    // reverse movement
+    private bool canReverse = true; 
+    private float reverseCooldown = 3f;
+    private int horizontalDirection = 1;
+
     private Rigidbody2D playerRb;
     private float current, target;
 
     private bool atTopBorder;
     private bool atBottomBorder;
+
 
     public void StartedMove()
     {
@@ -30,7 +39,9 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
+        horizontalDirection = 1;
     }
+
     private void Update()
     {
         if (Input.GetMouseButton(0) && !GameStarted)
@@ -47,15 +58,32 @@ public class PlayerController : MonoBehaviour
 
         CheckBorders();
 
+        float currentForceX_Up = Mathf.Abs(waveForceDirectionUp.x) * horizontalDirection;
+        float currentForceX_Down = Mathf.Abs(waveForceDirectionDown.x) * horizontalDirection;
+
         Vector2 targetVelocity;
 
         if (target == 1)
         {
-            targetVelocity = atTopBorder ? new Vector2(waveForceDirectionUp.x, 0f) : waveForceDirectionUp;
+            if (atTopBorder)
+            {
+                targetVelocity = new Vector2(currentForceX_Up, 0f);
+            }
+            else
+            {
+                targetVelocity = new Vector2(currentForceX_Up, waveForceDirectionUp.y);
+            }
         }
-        else
+        else 
         {
-            targetVelocity = atBottomBorder ? new Vector2(waveForceDirectionDown.x, 0f) : waveForceDirectionDown;
+            if (atBottomBorder)
+            {
+                targetVelocity = new Vector2(currentForceX_Down, 0f);
+            }
+            else
+            {
+                targetVelocity = new Vector2(currentForceX_Down, waveForceDirectionDown.y);
+            }
         }
 
         Vector2 velocityChange = (targetVelocity - playerRb.linearVelocity) * playerRb.mass * 50f;
@@ -69,14 +97,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            transform.rotation = Quaternion.Lerp(
-                Quaternion.Euler(0, 0, -waveAngleRotation),
-                Quaternion.Euler(0, 0, waveAngleRotation),
-                moveTransitionCurve.Evaluate(current)
-            );
+            float angleMultiplier = horizontalDirection;
+            float currentAngle = Mathf.Lerp(-waveAngleRotation, waveAngleRotation, moveTransitionCurve.Evaluate(current));
+            transform.rotation = Quaternion.Euler(0, 0, currentAngle * angleMultiplier);
         }
     }
-
 
     private void CheckBorders()
     {
@@ -112,6 +137,29 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Обнаружено препятствие");
             //LevelRestart();
         }
+
+        if (collision.gameObject.CompareTag("RevertMovement"))
+        {
+            if (canReverse)
+            {
+                ReverseMovement();
+                Debug.Log("Инвертирование движения выполнено");
+            }
+        }
+    }
+
+    private void ReverseMovement()
+    {
+        canReverse = false;
+        horizontalDirection *= -1;
+        GameManager.Instance.Camera.SetDirection(horizontalDirection);
+        StartCoroutine(ReverseCooldownCoroutine());
+    }
+
+    private IEnumerator ReverseCooldownCoroutine()
+    {
+        yield return new WaitForSeconds(reverseCooldown);
+        canReverse = true;
     }
 
     public void LevelRestart()

@@ -6,12 +6,22 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Transform target;
 
     [Header("Offset & Dead Zone")]
-    [SerializeField] private float xOffset;
-    [SerializeField] private float deadZoneHalfWidth;
+    public float xOffset;
+    public float deadZoneHalfWidth;
+
+    private float targetOffset;
+    private float smoothSpeed = 1f;
+
+    void Start()
+    {
+        targetOffset = xOffset;
+    }
 
     void LateUpdate()
     {
         if (target == null) return;
+
+        xOffset = Mathf.Lerp(xOffset, targetOffset, Time.deltaTime * smoothSpeed);
 
         float targetX = target.position.x + xOffset;
         float currentX = transform.position.x;
@@ -25,5 +35,12 @@ public class CameraFollow : MonoBehaviour
         }
 
         transform.position = new Vector3(desiredX, transform.position.y, transform.position.z);
+    }
+
+    public void SetDirection(int direction)
+    {
+        targetOffset = Mathf.Abs(xOffset) * direction;
+
+        Debug.Log($"[Camera] Смена направления. Цель оффсета: {targetOffset}");
     }
 }
