@@ -5,7 +5,7 @@ public class Appearance : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private int currentActionStep;
-    [SerializeField] private float actionDelay;
+    [SerializeField] private bool hideAtStart;
     [SerializeField] private AnimationCurve scaleCurve;
 
     private float animationDuration = 0.15f;
@@ -15,7 +15,7 @@ public class Appearance : MonoBehaviour
 
     private void OnEnable()
     {
-        startScale = Vector3.zero;
+        startScale = hideAtStart ? Vector3.zero : Vector3.one;
         targetScale = Vector3.one;
 
         transform.localScale = startScale;
@@ -38,30 +38,41 @@ public class Appearance : MonoBehaviour
             stepIsPlayed = true;
             gameObject.SetActive(true); 
 
-            StartCoroutine(ScaleUpAnimation(actionDelay));
+            StartCoroutine(ScaleAnimation());
         }
     }
 
-    private IEnumerator ScaleUpAnimation(float delay)
+    private IEnumerator ScaleAnimation()
     {
-        yield return new WaitForSeconds(delay);
+        Vector3 currentStartScale = transform.localScale;
+        if (hideAtStart)
+        {
+            yield return PlayScaleSequence(Vector3.zero, targetScale);
+        }
+        else
+        {
+            yield return PlayScaleSequence(currentStartScale, Vector3.zero);
+            yield return PlayScaleSequence(Vector3.zero, targetScale);
+        }
 
+        transform.localScale = targetScale;
+    }
+
+    private IEnumerator PlayScaleSequence(Vector3 from, Vector3 to)
+    {
         float elapsed = 0f;
-
-        float targetY = targetScale.y;
 
         while (elapsed < animationDuration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / animationDuration);
-
             float curveValue = scaleCurve.Evaluate(t);
-
-            transform.localScale = new Vector3(targetScale.x, targetY * curveValue, targetScale.z);
+            Vector3 newScale = Vector3.Lerp(from, to, curveValue);
+            transform.localScale = newScale;
 
             yield return null;
         }
 
-        transform.localScale = targetScale;
+        transform.localScale = to;
     }
 }
