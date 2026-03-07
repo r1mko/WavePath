@@ -5,42 +5,59 @@ public class CameraFollow : MonoBehaviour
     [Header("Target")]
     [SerializeField] private Transform target;
 
-    [Header("Offset & Dead Zone")]
+    [Header("Offset")]
     public float xOffset;
-    public float deadZoneHalfWidth;
-
     private float targetOffset;
-    private float smoothSpeed = 1f;
+
+    [Header("Settings")]
+    [SerializeField] private float catchUpSpeed;
+    [SerializeField] private float lagThreshold;
+    [SerializeField] private float snapPrecision;
+
+    private bool isCatchingUp = false;
 
     void Start()
     {
         targetOffset = xOffset;
+        transform.position = new Vector3(target.position.x + xOffset, transform.position.y, transform.position.z);
     }
 
     void LateUpdate()
     {
         if (target == null) return;
 
-        xOffset = Mathf.Lerp(xOffset, targetOffset, Time.deltaTime * smoothSpeed);
+        xOffset = Mathf.Lerp(xOffset, targetOffset, Time.deltaTime * 5f);
 
         float targetX = target.position.x + xOffset;
-        float currentX = transform.position.x;
+        float distance = Mathf.Abs(targetX - transform.position.x);
 
-        float delta = targetX - currentX;
-
-        float desiredX = currentX;
-        if (Mathf.Abs(delta) > deadZoneHalfWidth)
+        if (distance > lagThreshold)
         {
-            desiredX = targetX - Mathf.Sign(delta) * deadZoneHalfWidth;
+            isCatchingUp = true;
+            float newX = Mathf.Lerp(transform.position.x, targetX, Time.deltaTime * catchUpSpeed);
+            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
         }
-
-        transform.position = new Vector3(desiredX, transform.position.y, transform.position.z);
+        else if (isCatchingUp)
+        {
+            if (distance > snapPrecision)
+            {
+                float newX = Mathf.Lerp(transform.position.x, targetX, Time.deltaTime * 15f);
+                transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                isCatchingUp = false;
+                transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+            }
+        }
+        else
+        {
+            transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+        }
     }
 
     public void SetDirection(int direction)
     {
         targetOffset = Mathf.Abs(xOffset) * direction;
-
-        Debug.Log($"[Camera] Смена направления. Цель оффсета: {targetOffset}");
     }
 }

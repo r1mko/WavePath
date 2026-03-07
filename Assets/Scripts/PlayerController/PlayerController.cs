@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviour
     private bool canSlow = true;
     private bool canReverse = true;
 
-    private float cooldownZones = 2f;
+    private float cooldownZones = 1.5f;
+    private float cooldownSpeedZones = 0.5f;
 
     private int horizontalDirection = 1;
     private float speedMultiplicator = 1f;
@@ -170,7 +171,7 @@ public class PlayerController : MonoBehaviour
     {
         canSpeed = false;
         speedMultiplicator += speedStep;
-        StartCoroutine(CooldownCoroutine(cooldownZones, () => canSpeed = true));
+        StartCoroutine(CooldownCoroutine(cooldownSpeedZones, () => canSpeed = true));
     }
 
     private void SlowDownMovement()
