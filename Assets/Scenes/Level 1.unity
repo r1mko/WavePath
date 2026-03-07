@@ -1504,7 +1504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1471303038986860240, guid: 6bddcd8c606e2af4e8ce95a1da5b90a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.35
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1471303038986860240, guid: 6bddcd8c606e2af4e8ce95a1da5b90a9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1682,6 +1682,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   borderCheckRadius: 0.135
+  speedStep: 0.5
 --- !u!50 &2101933759
 Rigidbody2D:
   serializedVersion: 5

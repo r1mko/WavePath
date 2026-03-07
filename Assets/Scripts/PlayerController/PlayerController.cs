@@ -19,10 +19,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask borderLayer;
     [SerializeField] private float borderCheckRadius;
 
-    // reverse movement
-    private bool canReverse = true; 
-    private float reverseCooldown = 3f;
+    private bool canSpeed = true;
+    private bool canSlow = true;
+    private bool canReverse = true;
+
+    private float cooldownZones = 2f;
+
     private int horizontalDirection = 1;
+    private float speedMultiplicator = 1f;
+    [SerializeField] private float speedStep = 0.5f;
 
     private Rigidbody2D playerRb;
     private float current, target;
@@ -40,6 +45,7 @@ public class PlayerController : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody2D>();
         horizontalDirection = 1;
+        speedMultiplicator = 1f;
     }
 
     private void Update()
@@ -58,8 +64,8 @@ public class PlayerController : MonoBehaviour
 
         CheckBorders();
 
-        float currentForceX_Up = Mathf.Abs(waveForceDirectionUp.x) * horizontalDirection;
-        float currentForceX_Down = Mathf.Abs(waveForceDirectionDown.x) * horizontalDirection;
+        float currentForceX_Up = Mathf.Abs(waveForceDirectionUp.x) * horizontalDirection * speedMultiplicator;
+        float currentForceX_Down = Mathf.Abs(waveForceDirectionDown.x) * horizontalDirection * speedMultiplicator;
 
         Vector2 targetVelocity;
 
@@ -74,7 +80,7 @@ public class PlayerController : MonoBehaviour
                 targetVelocity = new Vector2(currentForceX_Up, waveForceDirectionUp.y);
             }
         }
-        else 
+        else
         {
             if (atBottomBorder)
             {
@@ -132,19 +138,23 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            Debug.Log("Обнаружено препятствие");
-            //LevelRestart();
-        }
+        string tag = collision.tag;
 
-        if (collision.gameObject.CompareTag("RevertMovement"))
+        switch (tag)
         {
-            if (canReverse)
-            {
-                ReverseMovement();
-                Debug.Log("Инвертирование движения выполнено");
-            }
+            case "Obstacle":
+                Debug.Log("Обнаружено препятствие");
+                // LevelRestart();
+                break;
+            case "RevertMovement":
+                if (canReverse) ReverseMovement();
+                break;
+            case "SpeedZone":
+                if (canSpeed) SpeedUpMovement();
+                break;
+            case "SlowZone":
+                if (canSlow) SlowDownMovement(); // Предположим, что флаг тот же или нужен другой
+                break;
         }
     }
 
@@ -153,14 +163,29 @@ public class PlayerController : MonoBehaviour
         canReverse = false;
         horizontalDirection *= -1;
         GameManager.Instance.Camera.SetDirection(horizontalDirection);
-        StartCoroutine(ReverseCooldownCoroutine());
+        StartCoroutine(CooldownCoroutine(cooldownZones, () => canReverse = true));
     }
 
-    private IEnumerator ReverseCooldownCoroutine()
+    private void SpeedUpMovement()
     {
-        yield return new WaitForSeconds(reverseCooldown);
-        canReverse = true;
+        canSpeed = false;
+        speedMultiplicator += speedStep;
+        StartCoroutine(CooldownCoroutine(cooldownZones, () => canSpeed = true));
     }
+
+    private void SlowDownMovement()
+    {
+        canSlow = false;
+        speedMultiplicator -= (speedStep / 2);
+        StartCoroutine(CooldownCoroutine(cooldownZones, () => canSlow = true));
+    }
+
+    private IEnumerator CooldownCoroutine(float seconds, System.Action onCooldownEnd)
+    {
+        yield return new WaitForSeconds(seconds);
+        onCooldownEnd?.Invoke();
+    }
+
 
     public void LevelRestart()
     {
