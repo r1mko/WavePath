@@ -1631,7 +1631,40 @@ MonoBehaviour:
     m_Bits: 8
   borderCheckRadius: 0.135
   deathParticle: {fileID: 8180827566530531391, guid: 3211adc7f190acb4a8e4ad2b2183f290, type: 3}
-  speedStep: 0.5
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1.5
+      inSlope: 1.2624433
+      outSlope: 1.2624433
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDuration: 1
 --- !u!50 &2101933759
 Rigidbody2D:
   serializedVersion: 5

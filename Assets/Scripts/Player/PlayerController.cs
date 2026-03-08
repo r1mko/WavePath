@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float borderCheckRadius;
 
     [SerializeField] private ParticleSystem deathParticle;
+    [SerializeField] private AnimationCurve scaleCurve;
 
     private bool pauseMovement;
     private bool canSpeed = true;
@@ -31,10 +32,12 @@ public class PlayerController : MonoBehaviour
 
     private int horizontalDirection = 1;
     private float speedMultiplicator = 1f;
-    [SerializeField] private float speedStep = 0.5f;
+    private float speedStep = 0.5f;
 
     private Rigidbody2D playerRb;
     private float current, target;
+
+    [SerializeField] private float animationDuration = 0.15f;
 
     private bool atTopBorder;
     private bool atBottomBorder;
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour
         pauseMovement = false;
         horizontalDirection = 1;
         speedMultiplicator = 1f;
+        StartCoroutine(PlayScaleSequence(Vector3.zero, Vector3.one));
     }
 
     private void Update()
@@ -196,6 +200,23 @@ public class PlayerController : MonoBehaviour
         onCooldownEnd?.Invoke();
     }
 
+    private IEnumerator PlayScaleSequence(Vector3 from, Vector3 to)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < animationDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / animationDuration);
+            float curveValue = scaleCurve.Evaluate(t);
+            Vector3 newScale = Vector3.Lerp(from, to, curveValue);
+            transform.localScale = newScale;
+
+            yield return null;
+        }
+
+        transform.localScale = to;
+    }
 
     public IEnumerator LevelRestart()
     {
@@ -207,6 +228,7 @@ public class PlayerController : MonoBehaviour
         Destroy(gameObject);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
 
     private void OnDrawGizmos()
     {
