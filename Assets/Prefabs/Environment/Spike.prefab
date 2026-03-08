@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3468731204583347824}
   - component: {fileID: 5718174416950939387}
   - component: {fileID: 3268338781507819587}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spike
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 2302870441246165548}
   - component: {fileID: 9048176051897427727}
   - component: {fileID: 4235732626943172094}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spike
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 8705670491963614313}
   - component: {fileID: 6529688906912811336}
   - component: {fileID: 8106286856194578104}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spike
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5399954467421663483}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -460,7 +460,7 @@ GameObject:
   - component: {fileID: 4425549003368345184}
   - component: {fileID: 8551329552839240649}
   - component: {fileID: 783893085488014345}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spike
   m_TagString: Obstacle
   m_Icon: {fileID: 0}

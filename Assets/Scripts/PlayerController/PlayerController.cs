@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask borderLayer;
     [SerializeField] private float borderCheckRadius;
 
+    [SerializeField] private ParticleSystem deathParticle;
+
+    private bool pauseMovement;
     private bool canSpeed = true;
     private bool canSlow = true;
     private bool canReverse = true;
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
+        pauseMovement = false;
         horizontalDirection = 1;
         speedMultiplicator = 1f;
     }
@@ -62,6 +66,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!GameStarted) return;
+        if (pauseMovement)
+        {
+            playerRb.linearVelocity = Vector2.zero;
+            return;
+        }
 
         CheckBorders();
 
@@ -145,7 +154,7 @@ public class PlayerController : MonoBehaviour
         {
             case "Obstacle":
                 Debug.Log("Обнаружено препятствие");
-                // LevelRestart();
+                StartCoroutine(LevelRestart());
                 break;
             case "RevertMovement":
                 if (canReverse) ReverseMovement();
@@ -188,8 +197,13 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void LevelRestart()
+    public IEnumerator LevelRestart()
     {
+        pauseMovement = true;
+        SpriteRenderer playerView = GetComponent<SpriteRenderer>();
+        playerView.enabled = false;
+        Instantiate(deathParticle, transform.position, transform.rotation).Play();
+        yield return new WaitForSeconds(0.7f);
         Destroy(gameObject);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

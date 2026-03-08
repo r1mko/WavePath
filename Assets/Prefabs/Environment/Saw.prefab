@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6337673898356127925}
   - component: {fileID: 4488865809711157878}
   - component: {fileID: 578686150085864409}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Triangle (3)
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1038938693370691467}
   - component: {fileID: 4699490183842946892}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 8884319013319160153}
   - component: {fileID: 6778583618117564688}
   - component: {fileID: 9137451966294822751}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Triangle (1)
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 3321132563520975761}
   - component: {fileID: 2643102970663121300}
   - component: {fileID: 8170991802556411526}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Saw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -485,7 +485,7 @@ GameObject:
   - component: {fileID: 6814121075235339257}
   - component: {fileID: 2292027413491793133}
   - component: {fileID: 3355267473333293989}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Triangle (2)
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -627,7 +627,7 @@ GameObject:
   - component: {fileID: 8770961767601082926}
   - component: {fileID: 9030145295893969943}
   - component: {fileID: 4274497777202790450}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Triangle
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
