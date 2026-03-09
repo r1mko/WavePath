@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public bool GameStarted;
+    public bool PauseMovement;
 
     // wave movement
     [SerializeField] private Vector2 waveForceDirectionUp;
@@ -22,7 +23,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ParticleSystem deathParticle;
     [SerializeField] private AnimationCurve scaleCurve;
 
-    private bool pauseMovement;
     private bool canSpeed = true;
     private bool canSlow = true;
     private bool canReverse = true;
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
-        pauseMovement = false;
+        PauseMovement = false;
         horizontalDirection = 1;
         speedMultiplicator = 1f;
         StartCoroutine(PlayScaleSequence(Vector3.zero, Vector3.one));
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!GameStarted) return;
-        if (pauseMovement)
+        if (PauseMovement)
         {
             playerRb.linearVelocity = Vector2.zero;
             return;
@@ -223,9 +223,8 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator LevelRestart()
     {
-        pauseMovement = true;
-        SpriteRenderer playerView = GetComponent<SpriteRenderer>();
-        playerView.enabled = false;
+        PauseMovement = true;
+        HidePlayerView();
         SoundManager.Instance.PlayDeath();
         Instantiate(deathParticle, transform.position, transform.rotation).Play();
         yield return new WaitForSeconds(0.7f);
@@ -233,6 +232,11 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void HidePlayerView()
+    {
+        SpriteRenderer playerView = GetComponent<SpriteRenderer>();
+        playerView.enabled = false;
+    }
 
     private void OnDrawGizmos()
     {
