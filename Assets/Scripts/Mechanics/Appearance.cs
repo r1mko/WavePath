@@ -44,6 +44,7 @@ public class Appearance : MonoBehaviour
 
     private IEnumerator ScaleAnimation()
     {
+        SoundManager.Instance.PlayAppearance();
         Vector3 currentStartScale = transform.localScale;
         if (hideAtStart)
         {

@@ -37,6 +37,7 @@ public class Portal : MonoBehaviour
             }
         }
 
+        SoundManager.Instance.PlayPortal();
         player.transform.position = exitPoint;
         StartCoroutine(ReenableAfterDelay(0.1f));
     }

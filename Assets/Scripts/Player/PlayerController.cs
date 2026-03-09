@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
         horizontalDirection = 1;
         speedMultiplicator = 1f;
         StartCoroutine(PlayScaleSequence(Vector3.zero, Vector3.one));
+        SoundManager.Instance.PlaySpawn();
     }
 
     private void Update()
@@ -157,7 +158,6 @@ public class PlayerController : MonoBehaviour
         switch (tag)
         {
             case "Obstacle":
-                Debug.Log("Обнаружено препятствие");
                 StartCoroutine(LevelRestart());
                 break;
             case "RevertMovement":
@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
                 if (canSpeed) SpeedUpMovement();
                 break;
             case "SlowZone":
-                if (canSlow) SlowDownMovement(); // Предположим, что флаг тот же или нужен другой
+                if (canSlow) SlowDownMovement();
                 break;
         }
     }
@@ -177,6 +177,7 @@ public class PlayerController : MonoBehaviour
         canReverse = false;
         horizontalDirection *= -1;
         GameManager.Instance.Camera.SetDirection(horizontalDirection);
+        SoundManager.Instance.PlayDirectionChange();
         StartCoroutine(CooldownCoroutine(cooldownZones, () => canReverse = true));
     }
 
@@ -184,6 +185,7 @@ public class PlayerController : MonoBehaviour
     {
         canSpeed = false;
         speedMultiplicator += speedStep;
+        SoundManager.Instance.PlayAcceleration();
         StartCoroutine(CooldownCoroutine(cooldownSpeedZones, () => canSpeed = true));
     }
 
@@ -191,6 +193,7 @@ public class PlayerController : MonoBehaviour
     {
         canSlow = false;
         speedMultiplicator -= (speedStep / 2);
+        SoundManager.Instance.PlaySlow();
         StartCoroutine(CooldownCoroutine(cooldownZones, () => canSlow = true));
     }
 
@@ -223,6 +226,7 @@ public class PlayerController : MonoBehaviour
         pauseMovement = true;
         SpriteRenderer playerView = GetComponent<SpriteRenderer>();
         playerView.enabled = false;
+        SoundManager.Instance.PlayDeath();
         Instantiate(deathParticle, transform.position, transform.rotation).Play();
         yield return new WaitForSeconds(0.7f);
         Destroy(gameObject);
