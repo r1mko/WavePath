@@ -14,6 +14,11 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float lagThreshold;
     [SerializeField] private float snapPrecision;
 
+    [Header("Bounds")]
+    [SerializeField] private bool useBounds;
+    [SerializeField] private float minX;
+    [SerializeField] private float maxX;
+
     private bool isCatchingUp = false;
 
     void Start()
@@ -29,6 +34,12 @@ public class CameraFollow : MonoBehaviour
         xOffset = Mathf.Lerp(xOffset, targetOffset, Time.deltaTime * 5f);
 
         float targetX = target.position.x + xOffset;
+
+        if (useBounds)
+        {
+            targetX = Mathf.Clamp(targetX, minX, maxX);
+        }
+
         float distance = Mathf.Abs(targetX - transform.position.x);
 
         if (distance > lagThreshold)
