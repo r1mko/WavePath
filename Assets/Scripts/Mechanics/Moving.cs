@@ -13,7 +13,7 @@ public class Moving : MonoBehaviour
     }
 
     [SerializeField] private MovingSettings[] movingSteps;
-    [SerializeField] private AnimationCurve moveCurve;
+    private AnimationCurve moveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     private bool[] stepIsPlayed;
 
@@ -66,6 +66,8 @@ public class Moving : MonoBehaviour
 
         float elapsed = 0f;
         float duration = Mathf.Max(0.01f, settings.duration);
+
+        SoundManager.Instance.PlayMoving();
 
         while (elapsed < duration)
         {

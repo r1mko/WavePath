@@ -7,6 +7,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource spawnSource;
     [SerializeField] private AudioSource directionChangeSource;
     [SerializeField] private AudioSource appearanceSource;
+    [SerializeField] private AudioSource movingSource;
     [SerializeField] private AudioSource accelerationSource;
     [SerializeField] private AudioSource slowSource;
     [SerializeField] private AudioSource portalSource;
@@ -42,6 +43,13 @@ public class SoundManager : MonoBehaviour
     {
         if (appearanceSource != null && appearanceSource.clip != null)
             appearanceSource.Play();
+    }
+
+
+    public void PlayMoving()
+    {
+        if (movingSource != null && movingSource.clip != null)
+            movingSource.Play();
     }
 
     public void PlayAcceleration()

@@ -6,8 +6,8 @@ public class Appearance : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int currentActionStep;
     [SerializeField] private bool hideAtStart;
-    [SerializeField] private AnimationCurve scaleCurve;
 
+    private AnimationCurve scaleCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     private float animationDuration = 0.15f;
     private bool stepIsPlayed;
     private Vector3 startScale;

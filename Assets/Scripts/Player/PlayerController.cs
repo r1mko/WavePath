@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ParticleSystem deathParticle;
     [SerializeField] private AnimationCurve scaleCurve;
 
+    private bool playerIsDead;
+
     private bool canSpeed = true;
     private bool canSlow = true;
     private bool canReverse = true;
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody2D>();
         PauseMovement = false;
+        playerIsDead = false;
         horizontalDirection = 1;
         speedMultiplicator = 1f;
         StartCoroutine(PlayScaleSequence(Vector3.zero, Vector3.one));
@@ -223,6 +226,9 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator LevelRestart()
     {
+        if (playerIsDead) yield break;
+
+        playerIsDead = true;
         PauseMovement = true;
         HidePlayerView();
         SoundManager.Instance.PlayDeath();

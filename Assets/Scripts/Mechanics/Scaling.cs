@@ -8,7 +8,7 @@ public class Scaling : MonoBehaviour
     [SerializeField] private int currentActionStep;
     [SerializeField] private Vector3 targetScale;
     [SerializeField] private float animationDuration;
-    [SerializeField] private AnimationCurve scaleCurve;
+    private AnimationCurve scaleCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     private bool stepIsPlayed;
 
 

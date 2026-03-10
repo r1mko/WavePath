@@ -69,6 +69,7 @@ public class FinishZone : MonoBehaviour
             playerController.HidePlayerView();
         }
 
+        SoundManager.Instance.PlayFinish();
         animController.Play("FinishAnimation");
 
         // SceneManager.LoadScene("Menu");
