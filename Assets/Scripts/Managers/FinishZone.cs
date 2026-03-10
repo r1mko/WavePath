@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class FinishZone : MonoBehaviour
 {
@@ -71,7 +72,11 @@ public class FinishZone : MonoBehaviour
 
         SoundManager.Instance.PlayFinish();
         animController.Play("FinishAnimation");
+    }
 
-        // SceneManager.LoadScene("Menu");
+    public void LoadNextScene() //from anim
+    {
+        int indexScene = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(indexScene);
     }
 }
