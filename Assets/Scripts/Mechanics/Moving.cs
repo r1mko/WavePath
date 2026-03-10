@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Moving : MonoBehaviour
@@ -16,6 +17,8 @@ public class Moving : MonoBehaviour
     private AnimationCurve moveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     private bool[] stepIsPlayed;
+    private Queue<MovingSettings> movementQueue = new Queue<MovingSettings>();
+    private bool isMoving = false;
 
     private void Start()
     {
@@ -54,8 +57,27 @@ public class Moving : MonoBehaviour
                     continue;
                 }
 
-                StartCoroutine(MoveAlongCurve(settings));
+                movementQueue.Enqueue(settings);
+
+                if (!isMoving)
+                {
+                    ProcessNextMovement();
+                }
             }
+        }
+    }
+
+    private void ProcessNextMovement()
+    {
+        if (movementQueue.Count > 0)
+        {
+            isMoving = true;
+            MovingSettings settings = movementQueue.Dequeue();
+            StartCoroutine(MoveAlongCurve(settings));
+        }
+        else
+        {
+            isMoving = false;
         }
     }
 
@@ -83,5 +105,7 @@ public class Moving : MonoBehaviour
         }
 
         transform.position = endPos;
+
+        ProcessNextMovement();
     }
 }

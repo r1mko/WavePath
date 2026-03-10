@@ -65,11 +65,6 @@ public class Appearance : MonoBehaviour
         yield return PlayScaleSequence(from, to);
 
         transform.localScale = to;
-
-        if (appearanceType == AppearanceType.Hide)
-        {
-            gameObject.SetActive(false);
-        }
     }
 
     private IEnumerator PlayScaleSequence(Vector3 from, Vector3 to)
