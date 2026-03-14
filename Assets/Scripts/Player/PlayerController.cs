@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool GameStarted;
+    public bool LevelStarted;
+    public bool LevelFinished;
     public bool PauseMovement;
 
     // wave movement
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     public void StartedMove()
     {
-        GameStarted = true;
+        LevelStarted = true;
     }
 
     private void Start()
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody2D>();
         PauseMovement = false;
         playerIsDead = false;
+        LevelFinished = false;
         horizontalDirection = 1;
         speedMultiplicator = 1f;
         StartCoroutine(PlayScaleSequence(Vector3.zero, Vector3.one));
@@ -63,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0) && !GameStarted)
+        if (Input.GetMouseButton(0) && !LevelStarted)
         {
             StartedMove();
         }
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!GameStarted) return;
+        if (!LevelStarted) return;
         if (PauseMovement)
         {
             playerRb.linearVelocity = Vector2.zero;
@@ -161,7 +163,10 @@ public class PlayerController : MonoBehaviour
         switch (tag)
         {
             case "Obstacle":
-                StartCoroutine(LevelRestart());
+                if (!LevelFinished)
+                {
+                    StartCoroutine(LevelRestart());
+                }
                 break;
             case "RevertMovement":
                 if (canReverse) ReverseMovement();

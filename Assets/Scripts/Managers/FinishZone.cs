@@ -28,6 +28,7 @@ public class FinishZone : MonoBehaviour
         var playerController = player.GetComponent<PlayerController>();
         if (playerController != null)
         {
+            playerController.LevelFinished = true;
             playerController.PauseMovement = true;
         }
 
