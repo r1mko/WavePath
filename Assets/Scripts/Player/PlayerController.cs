@@ -158,15 +158,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (LevelFinished) return;
+
         string tag = collision.tag;
 
         switch (tag)
         {
             case "Obstacle":
-                if (!LevelFinished)
-                {
-                    StartCoroutine(LevelRestart());
-                }
+                StartCoroutine(LevelRestart());
                 break;
             case "RevertMovement":
                 if (canReverse) ReverseMovement();
