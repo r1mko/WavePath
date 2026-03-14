@@ -33,6 +33,7 @@ public class Scaling : MonoBehaviour
 
     private IEnumerator ScaleAnimation(Vector3 from, Vector3 to)
     {
+        SoundManager.Instance.PlayScalling();
         float elapsed = 0f;
 
         while (elapsed < animationDuration)
