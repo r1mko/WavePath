@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     private bool canSlow = true;
     private bool canReverse = true;
 
-    private float cooldownZones = 1.5f;
+    private float cooldownZones = 1f;
     private float cooldownSpeedZones = 0.5f;
 
     private int horizontalDirection = 1;
