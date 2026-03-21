@@ -107,7 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   Destination: {fileID: 2869482919401295768}
   DestinationPortal: {fileID: 7645821309506232556}
-  exitBuffer: 0.25
+  exitBuffer: 1
 --- !u!61 &7627226506349448431
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   Destination: {fileID: 6073741374248918178}
   DestinationPortal: {fileID: 3459806630277873506}
-  exitBuffer: 0.25
+  exitBuffer: 1
 --- !u!61 &9206812037404839367
 BoxCollider2D:
   m_ObjectHideFlags: 0
