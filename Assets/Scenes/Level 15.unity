@@ -1013,6 +1013,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3459806630277873506, guid: 87d1dae31d035ee4280e958072ee8e7b, type: 3}
+      propertyPath: exitBuffer
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 6046553839050663682, guid: 87d1dae31d035ee4280e958072ee8e7b, type: 3}
       propertyPath: m_Name
       value: Teleport

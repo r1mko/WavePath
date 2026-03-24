@@ -79,11 +79,6 @@ public class Moving : MonoBehaviour
         }
     }
 
-    public void ForceReset()
-    {
-        ResetState();
-    }
-
     private void ProcessNextMovement()
     {
         if (movementQueue.Count > 0)
