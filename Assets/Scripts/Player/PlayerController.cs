@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    private const string DEATH_KEY = "DEATH_COUNT";
+
     public bool LevelStarted;
     public bool LevelFinished;
     public bool PauseMovement;
@@ -234,6 +236,10 @@ public class PlayerController : MonoBehaviour
 
         playerIsDead = true;
         PauseMovement = true;
+        int deathCount = PlayerPrefs.GetInt(DEATH_KEY) + 1;
+        PlayerPrefs.SetInt(DEATH_KEY, deathCount);
+        PlayerPrefs.Save();
+        Debug.Log($"Добавили в счётчик смертей значение. Стало: {PlayerPrefs.GetInt(DEATH_KEY)}");
         HidePlayerView();
         SoundManager.Instance.PlayDeath();
         Instantiate(deathParticle, transform.position, transform.rotation).Play();

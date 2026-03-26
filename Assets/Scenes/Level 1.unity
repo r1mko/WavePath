@@ -466,7 +466,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: -10}
+  m_LocalPosition: {x: 4, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -485,13 +485,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 2101933757}
-  xOffset: 7
+  xOffset: 4
   catchUpSpeed: 25
   lagThreshold: 2
   snapPrecision: 1
   useBounds: 1
-  minX: 3
-  maxX: 27
+  minX: 4
+  maxX: 20
 --- !u!1 &568202993
 GameObject:
   m_ObjectHideFlags: 0
