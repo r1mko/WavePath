@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class FinishZone : MonoBehaviour
 {
+    [SerializeField] private bool notUsingAnim;
     [SerializeField] private Animator animController;
     [SerializeField] private AnimationCurve moveCurve;
     [SerializeField] private float moveDuration = 1f;
@@ -12,7 +13,8 @@ public class FinishZone : MonoBehaviour
 
     private void Awake()
     {
-        if (animController == null) animController = GetComponent<Animator>();
+        if (!notUsingAnim)
+            if (animController == null) animController = GetComponent<Animator>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -72,7 +74,17 @@ public class FinishZone : MonoBehaviour
         }
 
         SoundManager.Instance.PlayFinish();
-        animController.Play("FinishAnimation");
+        if (!notUsingAnim)
+            animController.Play("FinishAnimation");
+        else
+            StartCoroutine(LoadNextSceneWithDelay());
+    }
+
+
+    IEnumerator LoadNextSceneWithDelay()
+    {
+        yield return new WaitForSeconds(1f);
+        LoadNextScene();
     }
 
     public void LoadNextScene() //from anim
