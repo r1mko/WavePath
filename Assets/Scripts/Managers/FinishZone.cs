@@ -89,7 +89,16 @@ public class FinishZone : MonoBehaviour
 
     public void LoadNextScene() //from anim
     {
-        int indexScene = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(indexScene);
+        int currentIndex = SceneManager.GetActiveScene().buildIndex;
+        int maxIndex = SceneManager.sceneCountInBuildSettings - 1;
+
+        if (currentIndex >= maxIndex)
+        {
+            SceneManager.LoadScene(1);
+        }
+        else
+        {
+            SceneManager.LoadScene(currentIndex + 1);
+        }
     }
 }
