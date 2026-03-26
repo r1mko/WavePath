@@ -239,7 +239,6 @@ public class PlayerController : MonoBehaviour
         int deathCount = PlayerPrefs.GetInt(DEATH_KEY) + 1;
         PlayerPrefs.SetInt(DEATH_KEY, deathCount);
         PlayerPrefs.Save();
-        Debug.Log($"Добавили в счётчик смертей значение. Стало: {PlayerPrefs.GetInt(DEATH_KEY)}");
         HidePlayerView();
         SoundManager.Instance.PlayDeath();
         Instantiate(deathParticle, transform.position, transform.rotation).Play();

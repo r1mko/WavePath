@@ -23,7 +23,6 @@ public class StepTrigger : MonoBehaviour
             {
                 ActionBus.AdvanceTo(CurrentStep);
                 wasUsed = true;
-                Debug.Log($"[StepTrigger]Старт сценария с шагом: {CurrentStep}");
             }
         }
     }
