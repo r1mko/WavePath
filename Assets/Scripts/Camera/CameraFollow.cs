@@ -24,7 +24,6 @@ public class CameraFollow : MonoBehaviour
     void Start()
     {
         targetOffset = xOffset;
-        //transform.position = new Vector3(target.position.x + xOffset, transform.position.y, transform.position.z);
     }
 
     void LateUpdate()

@@ -75,8 +75,6 @@ public class DeathCounterUI : MonoBehaviour
                 digitImages[i].enabled = false;
             }
         }
-
-        Debug.Log($"[DeathCounterUI] Отображено смертей: {deaths}. Строка: {deathString}");
     }
 
     private Sprite GetSpriteForDigit(int digit)

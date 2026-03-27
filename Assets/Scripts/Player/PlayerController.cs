@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
@@ -67,6 +68,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (Input.GetMouseButton(0) && !LevelStarted)
         {
             StartedMove();
