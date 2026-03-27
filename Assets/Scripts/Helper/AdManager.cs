@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using System;
 using YG;
 
 public class AdManager : MonoBehaviour
 {
     public static AdManager Instance { get; private set; }
 
-    [SerializeField] private float cooldownDuration = 120f;
-
-    private const string LAST_AD_TIME_KEY = "LAST_AD_SHOW_TIME";
+    [SerializeField] private float cooldownDuration = 61f;
+    private float lastShowTime;
 
     private void Awake()
     {
@@ -22,43 +20,49 @@ public class AdManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        lastShowTime = -1f;
     }
 
     public void TryShowAd()
     {
         if (!CheckCooldown())
         {
+            Debug.Log("[AdManager] Реклама НЕ вызвана: кулдаун еще не истек.");
             return;
         }
 
+        Debug.Log("[AdManager] Кулдаун истек (или первый запуск). Вызов рекламы...");
         ShowAdInternal();
-        SaveLastAdTime();
+
+        lastShowTime = Time.realtimeSinceStartup;
+        Debug.Log("[AdManager] Таймер кулдауна запущен.");
     }
 
     private bool CheckCooldown()
     {
-        var lastShowTime = PlayerPrefs.GetFloat(LAST_AD_TIME_KEY);
-        var currentTime = DateTime.Now.ToOADate();
+        if (lastShowTime < 0f)
+        {
+            Debug.Log("[AdManager] Первый запуск в сессии: кулдаун пропускается.");
+            return true;
+        }
 
-        var timePassed = (currentTime - lastShowTime) * 24 * 60 * 60;
+        float currentTime = Time.realtimeSinceStartup;
+        float timePassed = currentTime - lastShowTime;
 
         if (timePassed < cooldownDuration)
         {
+            float timeLeft = cooldownDuration - timePassed;
+            Debug.Log($"[AdManager] Проверка: прошло {timePassed:F1} сек, нужно {cooldownDuration} сек. Осталось ждать: {timeLeft:F1} сек.");
             return false;
         }
 
+        Debug.Log($"[AdManager] Проверка: прошло {timePassed:F1} сек. Кулдаун завершен.");
         return true;
     }
 
     private void ShowAdInternal()
     {
         YG2.InterstitialAdvShow();
-        YG2.InterstitialAdvShow();
-    }
-
-    private void SaveLastAdTime()
-    {
-        PlayerPrefs.SetFloat(LAST_AD_TIME_KEY, (float)DateTime.Now.ToOADate());
-        PlayerPrefs.Save();
     }
 }

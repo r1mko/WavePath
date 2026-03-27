@@ -14394,7 +14394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b85e06bee681b7f4681e792e60d2051c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AdManager
-  cooldownDuration: 120
+  cooldownDuration: 61
 --- !u!1 &1299739382
 GameObject:
   m_ObjectHideFlags: 0
