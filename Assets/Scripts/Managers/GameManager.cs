@@ -13,6 +13,12 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        if (AdManager.Instance != null)
+            AdManager.Instance.TryShowAd();
+    }
+
     private void FindRefs()
     {
         if (Camera == null)
