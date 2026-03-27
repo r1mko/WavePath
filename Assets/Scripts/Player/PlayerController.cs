@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
     private bool atTopBorder;
     private bool atBottomBorder;
 
+    private bool inputActive;
+
 
     public void StartedMove()
     {
@@ -73,12 +75,21 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButton(0) && !LevelStarted)
+        if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
         {
-            StartedMove();
+            if (!LevelStarted)
+            {
+                StartedMove();
+            }
+
+            inputActive = true;
+        }
+        else
+        {
+            inputActive = false;
         }
 
-        target = Input.GetMouseButton(0) ? 1 : 0;
+        target = inputActive ? 1 : 0;
     }
 
     private void FixedUpdate()
