@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using YG;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,21 +11,6 @@ public class GameManager : MonoBehaviour
     {
         FindRefs();
         Instance = this;
-    }
-
-    private void Start()
-    {
-        YG2.InterstitialAdvShow();
-
-        //if (AdManager.Instance != null)
-        //{
-        //    AdManager.Instance.TryShowAd();
-        //}
-        //else
-        //{
-        //    Debug.Log("AdManager недоступен");
-        //}
-
     }
 
     private void FindRefs()

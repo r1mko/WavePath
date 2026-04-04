@@ -89,6 +89,23 @@ public class FinishZone : MonoBehaviour
 
     public void LoadNextScene() //from anim
     {
+
+        NextLevelButton nextLevelButton = UIManager.Instance != null ? UIManager.Instance.GetNextLevelButton() : null;
+
+        if (nextLevelButton != null)
+        {
+            nextLevelButton.gameObject.SetActive(true);
+            nextLevelButton.SetupListener();
+        }
+        else
+        {
+            Debug.LogWarning("FinishZone: NextLevelButton not found in UIManager. Using fallback.");
+            LoadNextSceneFallback();
+        }
+    }
+
+    private void LoadNextSceneFallback()
+    {
         int currentIndex = SceneManager.GetActiveScene().buildIndex;
         int maxIndex = SceneManager.sceneCountInBuildSettings - 1;
 

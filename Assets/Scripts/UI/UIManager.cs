@@ -4,19 +4,33 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance { get; private set; }
+
     [SerializeField] private Button restartButton;
     [SerializeField] private Button menuButton;
+    [SerializeField] private NextLevelButton nextLevelButton;
 
-    private void Start()
+    private void Awake()
     {
-        restartButton.onClick.AddListener(RestartLevel);
-        menuButton.onClick.AddListener(LoadMenu);
+        Instance = this;
+
+        if (restartButton != null)
+            restartButton.onClick.AddListener(RestartLevel);
+
+        if (menuButton != null)
+            menuButton.onClick.AddListener(LoadMenu);
     }
 
     private void OnDestroy()
     {
-        restartButton.onClick.RemoveAllListeners();
-        menuButton.onClick.RemoveAllListeners();
+        if (restartButton != null)
+            restartButton.onClick.RemoveAllListeners();
+
+        if (menuButton != null)
+            menuButton.onClick.RemoveAllListeners();
+
+        if (Instance == this)
+            Instance = null;
     }
 
     private void RestartLevel()
@@ -27,5 +41,10 @@ public class UIManager : MonoBehaviour
     private void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public NextLevelButton GetNextLevelButton()
+    {
+        return nextLevelButton;
     }
 }
